@@ -11,7 +11,7 @@
 
 <body>
     <h1>Create your listing here:</h1>
-    <form action="/item" method="POST" enctype="multipart/form-data">
+    <form id="submitForm">
         Title: <input type="input" name="title"><br/>
         <br>
         Price: <input type="number" name="price"><br/>
@@ -36,7 +36,12 @@
         Submit <br><button type="submit"> Create new listing </button>
 
     </form>
-    <script src="" async defer></script>
+
+   Refresh: <button id="refresh">Refresh</button>
+    <table id="list">
+
+    </table>
+    <script src="index.js" async defer></script>
 </body>
 
 

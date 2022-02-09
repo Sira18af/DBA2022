@@ -21,20 +21,17 @@ const options = {
     uploadDir: './uploads'
 }
 
-app.use(formData.parse(options));
+
 
 
 const products = [];
 
-app.post('/item', (req, res, next) => {
+app.post('/item', formData.parse(options), (req, res, next) => {
 let { title, price, category } = req.body;
 let thumbnail = req.files.thumbnail.path.replace('\\', '/');
 
 products.push({ title, price, category, thumbnail });
-
 console.log(products);
-
-res.redirect('/list.html');
 
 });
 
