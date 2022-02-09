@@ -27,10 +27,15 @@ app.use(formData.parse(options));
 const products = [];
 
 app.post('/item', (req, res, next) => {
-console.log(req.body);
-console.log(req.files);
+let { title, price, category } = req.body;
+let thumbnail = req.files.thumbnail.path.replace('\\', '/');
 
-res.redirect('/');
+products.push({ title, price, category, thumbnail });
+
+console.log(products);
+
+res.redirect('/list.html');
+
 });
 
 
