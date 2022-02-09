@@ -31,5 +31,16 @@ refresh.addEventListener('click', async () => {
     .then((res) => res.json())
     .then((res) => {
         console.log(res);
+
+        res.forEach((e) => {
+                list.innerHTML += `
+                <tr>
+                    <td>${e.title}</td>
+                    <td>${e.price}</td>
+                    <td>${e.category}</td>
+                    <td><img src="${e.thumbnail}" style="height: 50px;width:50px;" /></td>
+                </tr>
+               `;
+        });
     })
 });
