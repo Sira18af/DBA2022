@@ -94,6 +94,9 @@ app.post('/login', async (req, res) => {
     }
 });
 
+app.get('/items', (req, res) => {
+    res.json(products);
+});
 
 server.listen(3000, function(){
     console.log("server is listening on port: 3000");

@@ -10,3 +10,26 @@ form.addEventListener('submit', async (e) => {
         body: formData
     });
 });
+
+
+let refresh = document.getElementById('refresh'); //Tag element og refresh
+let list = document.getElementById('list');
+
+refresh.addEventListener('click', async () => {
+    list.innerHTML = `
+    <tr>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Image</th>
+    </tr>
+    `;
+
+    await fetch('http://localhost:3000/items', {
+        method: 'GET'
+    })
+    .then((res) => res.json())
+    .then((res) => {
+        console.log(res);
+    })
+});
