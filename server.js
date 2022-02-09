@@ -4,12 +4,34 @@ const bcrypt = require('bcrypt');
 const path = require("path");
 const bodyParser = require('body-parser');
 const users = require('./data').userDB;
+const formData = require('express-form-data');
+
 
 const app = express();
 const server = http.createServer(app);
 
+app.use('/', express.static('public'));
+app.use('/uploads', express.static('uploads'));
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname,'./public')));
+
+
+const options = {
+    uploadDir: './uploads'
+}
+
+app.use(formData.parse(options));
+
+
+const products = [];
+
+app.post('/item', (req, res, next) => {
+console.log(req.body);
+console.log(req.files);
+
+res.redirect('/');
+});
 
 
 app.get('/',(req,res) => {
@@ -53,7 +75,7 @@ app.post('/login', async (req, res) => {
             const passwordMatch = await bcrypt.compare(submittedPass, storedPass);
             if (passwordMatch) {
                 let usrname = foundUser.username;
-                res.send(`<div align ='center'><h2>login successful</h2></div><br><br><br><div align ='center'><h3>Hello ${usrname}</h3></div><br><br><div align='center'><a href='./login.html'>logout</a></div>`);
+                res.send(`<div align ='center'><h2>login successful</h2></div><br><br><br><div align ='center'><h3>Hello ${usrname}</h3></div><br><br><div align='center'><a href='./login.html'>logout</a></div> <br><br><div align='center'><a href='./list.html'>Create a new listing</a></div>`);
             } else {
                 res.send("<div align ='center'><h2>Invalid email or password</h2></div><br><br><div align ='center'><a href='./login.html'>login again</a></div>");
             }
