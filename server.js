@@ -1,3 +1,4 @@
+//Nødvendige applikation brugt til projektet
 const express = require('express');
 const http = require('http');
 const bcrypt = require('bcrypt');
@@ -5,42 +6,42 @@ const path = require("path");
 const bodyParser = require('body-parser');
 const users = require('./data').userDB;
 const formData = require('express-form-data');
-
-
 const app = express();
 const server = http.createServer(app);
 
+//Paths til front-end
 app.use('/', express.static('public'));
 app.use('/uploads', express.static('uploads'));
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname,'./public')));
 
-
+//Speciferer hvor uploadet billeder skal ende henne
 const options = {
     uploadDir: './uploads'
 }
 
 
 
-
+//Tomt array til varer brugeren har lagt op
 const products = [];
 
+//POST method med path og callbacks med henblik på formData 
 app.post('/item', formData.parse(options), (req, res, next) => {
 let { title, price, category } = req.body;
 let thumbnail = req.files.thumbnail.path.replace('\\', '/');
 
+//Produktet pushes til vores tomme array
 products.push({ title, price, category, thumbnail });
 console.log(products);
+    });
 
-});
-
-
+//Routing respons til client request
 app.get('/',(req,res) => {
     res.sendFile(path.join(__dirname,'./public/index.html'));
 });
 
-
+//Post method til brugere ved registrering af ny konti
 app.post('/register', async (req, res) => {
     try{
         let foundUser = users.find((data) => req.body.email === data.email);
