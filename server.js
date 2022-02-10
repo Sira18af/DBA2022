@@ -55,18 +55,20 @@ app.post('/register', async (req, res) => {
                 email: req.body.email,
                 password: hashPassword,
             };
-            users.push(newUser);
+            users.push(newUser); //Såfremt succes, pushes ovenstående ind i array
             console.log('User list', users);
-    
+    //Success:
             res.send("<div align ='center'><h2>Registration successful</h2></div><br><br><div align='center'><a href='./login.html'>login</a></div><br><br><div align='center'><a href='./registration.html'>Register another user</a></div>");
         } else {
             res.send("<div align ='center'><h2>Email already used</h2></div><br><br><div align='center'><a href='./registration.html'>Register again</a></div>");
-        }
+        } //Failure:
     } catch{
         res.send("Internal server error");
     }
 });
 
+
+//Samme logik, blot med login. Leder array igennem efter user ssubmittedPass samt storedPass. Hvis de matcher, kan man logge ind
 app.post('/login', async (req, res) => {
     try{
         let foundUser = users.find((data) => req.body.email === data.email);
@@ -76,29 +78,30 @@ app.post('/login', async (req, res) => {
             let storedPass = foundUser.password; 
     
             const passwordMatch = await bcrypt.compare(submittedPass, storedPass);
-            if (passwordMatch) {
-                let usrname = foundUser.username;
+            if (passwordMatch) { //Success
+                let usrname = foundUser.username; 
                 res.send(`<div align ='center'><h2>login successful</h2></div><br><br><br><div align ='center'><h3>Hello ${usrname}</h3></div><br><br><div align='center'><a href='./login.html'>logout</a></div> <br><br><div align='center'><a href='./list.html'>Create a new listing</a></div>`);
-            } else {
+            } else { //Failure 1
                 res.send("<div align ='center'><h2>Invalid email or password</h2></div><br><br><div align ='center'><a href='./login.html'>login again</a></div>");
             }
         }
-        else {
+        else { //Failure 2
     
             let fakePass = `$2b$$10$ifgfgfgfgfgfgfggfgfgfggggfgfgfga`;
             await bcrypt.compare(req.body.password, fakePass);
     
             res.send("<div align ='center'><h2>Invalid email or password</h2></div><br><br><div align='center'><a href='./login.html'>login again<a><div>");
         }
-    } catch{
+    } catch{ //Catch error
         res.send("Internal server error");
     }
 });
-
+//Til at få vist en tabel, benyttes app.get som responser arrayet, products
 app.get('/items', (req, res) => {
     res.json(products);
 });
 
+//Serveren lytter til port:3000 og bliver bekræftet i funktionalitet hver gang den startes
 server.listen(3000, function(){
     console.log("server is listening on port: 3000");
 });
